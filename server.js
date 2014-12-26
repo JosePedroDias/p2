@@ -106,26 +106,5 @@ app.use('/peer', ExpressPeerServer(server, peerOptions));
 
 
 
-// peer server events
-
-/*server.on('connection', function(id) {
-	//console.log(id);
-	if (typeof id !== 'string') {
-		return console.log('added id: discarded');
-	}
-	console.log('added id %s.', id);
-	connectedKeys.push(id);
-});
-
-server.on('disconnect', function(id) {
-	var idx = connectedKeys.indexOf(id);
-	if (idx === -1) {
-		return console.log('removing id %s: not found', id);
-	}
-	connectedKeys.splice(idx, 1);
-	console.log('removing id %s: done', id);
-});*/
-
-
 
 console.log('running on port %d...', port);
