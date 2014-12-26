@@ -116,7 +116,7 @@ peer.on('connection', function(dataConn) {
 	log('** inbound connection from ' + dataConn.peer + ' **', messagesEl);
 	
 	dataConn.on('data', function(data) {
-		log('<- ' + dataConn.peer + ' : ' + data, messagesEl);
+		onReceive(dataConn.peer, data);
 	});
 });
 
@@ -129,8 +129,12 @@ var dial = function(key) {
 	outboundConnections[key] = dataConn;
 };
 
+var onReceive = function(key, content) {
+	log('<- ' + key + ' : ' + content, messagesEl);
+};
+
 var send = function(key, content) {
-	log('-> ' + key + ' : ' + content, messagesEl);
+	log('-> ' + (key || 'ALL') + ' : ' + content, messagesEl);
 	var dataConn;
 	if (key === '') {
 		var v;
