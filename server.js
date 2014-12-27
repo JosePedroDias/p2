@@ -68,7 +68,12 @@ var notifyOfChange = function(change) {
 
 // routes
 
-app.use(express.static(__dirname + '/'));
+//CORS middleware
+var allowCrossDomain = function(req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*');
+	next();
+};
+app.use(allowCrossDomain);
 
 app.get('/', function(req, res, next) {
 	res.redirect('/demo.html');
@@ -106,6 +111,7 @@ var server = app.listen(port);
 
 app.use('/peer', ExpressPeerServer(server, peerOptions));
 
+app.use(express.static(__dirname + '/'));
 
 
 

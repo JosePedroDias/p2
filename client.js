@@ -3,6 +3,8 @@ function peer2(cfg) {
 
 
 
+	var noop = function() {};
+
 	var ajax = function(o) {
 		if (!o.cb) { o.cb = noop; }
 		var xhr = new XMLHttpRequest();
@@ -128,6 +130,12 @@ function peer2(cfg) {
 		},
 		getOtherKeys: function() {
 			return _otherKeys;
+		},
+		reportBadKey: function(key) {
+			ajax({
+				uri:'/keys/del/' + key,
+				cb: noop
+			});
 		},
 		send: function(key, content) {
 			var dataConn;
