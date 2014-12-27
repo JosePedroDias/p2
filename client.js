@@ -3,6 +3,11 @@ function peer2(cfg) {
 
 
 
+	// http://peerjs.com/docs/#api
+
+
+
+
 	var noop = function() {};
 
 	var ajax = function(o) {
@@ -35,7 +40,6 @@ function peer2(cfg) {
 
 
 
-	//var peer = new Peer({key:'i5sd6pb4xfnd0a4i'});
 	var peer = new Peer(undefined, {
 		host: cfg.host || '127.0.0.1',
 		port: cfg.port || 6677,
@@ -114,7 +118,11 @@ function peer2(cfg) {
 
 
 	var dial = function(key) {
-		var dataConn = peer.connect(key);
+		var o = {};
+		if (cfg.label) {
+			o.label = cfg.label;
+		}
+		var dataConn = peer.connect(key, o);
 		outboundConnections[key] = dataConn;
 
 		if (cfg.onDialDone) {
@@ -125,6 +133,7 @@ function peer2(cfg) {
 
 
 	var api = {
+		_: peer,
 		getMyId: function() {
 			return peer.id;
 		},
@@ -136,6 +145,9 @@ function peer2(cfg) {
 				uri:'/keys/del/' + key,
 				cb: noop
 			});
+		},
+		setLabel: function(label) {
+			cfg.label = label;
 		},
 		send: function(key, content) {
 			var dataConn;

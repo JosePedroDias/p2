@@ -34,6 +34,7 @@ var aliases = {};
 
 
 var p2 = peer2({
+	//label: prompt('name?', ''),
 	onKeysChangeOccurred: function(otherKeys, action, key) {
 		//log('onKeysChangeOccurred: ' + otherKeys, messagesEl, 'log');
 	},
