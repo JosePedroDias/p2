@@ -41,8 +41,8 @@ function peer2(cfg) {
 
 
 	var peer = new Peer(undefined, {
-		host: cfg.host || '127.0.0.1',
-		port: cfg.port || 6677,
+		host: cfg.host || location.hostname, //'127.0.0.1',
+		port: cfg.port || location.port, //6677,
 		path: cfg.path || '/peer'
 	});
 
