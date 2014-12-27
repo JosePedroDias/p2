@@ -1,6 +1,25 @@
 function peer2(cfg) {
 	'use strict';
 
+
+
+	var ajax = function(o) {
+		if (!o.cb) { o.cb = noop; }
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', o.uri, true);
+		var cbInner = function() {
+			if (xhr.readyState === 4 && xhr.status > 199 && xhr.status < 300) {
+				return o.cb(null, JSON.parse(xhr.response));
+			}
+			o.cb('error requesting ' + o.uri);
+		};
+		xhr.onload  = cbInner;
+		xhr.onerror = cbInner;
+		xhr.send(o.payload || null);
+	};
+
+
+
 	var outboundConnections = {};
 
 	var _otherKeys = [];
@@ -22,7 +41,7 @@ function peer2(cfg) {
 	});
 
 
-	var changeOccurred = function changeOccurred(err, res) {
+	var keysChangeOccurred = function changeOccurred(err, res) {
 		if (err) { return console.error(err); }
 
 		if (res.action === 'add') {
@@ -38,10 +57,10 @@ function peer2(cfg) {
 			_otherKeys.push(res.key);
 		}
 		
-		if (cfg.onChangeOccurred) {
-			cfg.onChangeOccurred(_otherKeys, res.action, res.key);
+		if (cfg.onKeysChangeOccurred) {
+			cfg.onKeysChangeOccurred(_otherKeys, res.action, res.key);
 		}
-		waitForOtherKeysChange(changeOccurred);
+		waitForOtherKeysChange(keysChangeOccurred);
 	};
 
 
@@ -56,10 +75,10 @@ function peer2(cfg) {
 					dial(key);
 				});
 
-				if (cfg.onChangeOccurred) {
-					cfg.onChangeOccurred(_otherKeys);
+				if (cfg.onKeysChangeOccurred) {
+					cfg.onKeysChangeOccurred(_otherKeys);
 				}
-				waitForOtherKeysChange(changeOccurred)
+				waitForOtherKeysChange(keysChangeOccurred)
 			}
 		});
 		

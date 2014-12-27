@@ -93,7 +93,9 @@ app.get('/keys/del/:key', function(req, res, next) {
 	if (res) {
 		notifyOfChange({action:'del', key:key});
 	}
-	res.send(res);
+	try {
+		res.send(res);
+	} catch (ex) {}
 });
 
 app.get('/keys/polling', function(req, res, next) {
